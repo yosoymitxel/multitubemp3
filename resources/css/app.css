@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.bg-linkea-primary{
+    background: var(--linkea-bg-color);
+}
+
+.button{
+    @apply bg-gray-50
+    px-6 py-2
+    hover:bg-gray-100
+    rounded-sm
+    transition
+    ease-in-out
+    duration-200;
+}
+.button.is-primary {
+    @apply bg-green-500 text-gray-50 hover:bg-green-600;
+}
+.button.is-secondary {
+    @apply bg-blue-500 text-black hover:bg-blue-600;
+}
+.button.is-danger {
+    @apply bg-red-500 text-gray-50 hover:bg-red-600;
+}
+.button.is-warning {
+    @apply bg-yellow-500 text-black hover:bg-yellow-600;
+}
+.button.is-info {
+    @apply bg-blue-300 text-black hover:bg-blue-400;
+}
+
+.navbar-item{
+    @apply text-white px-4 py-2 mt-2 mr-1 bg-transparent rounded-sm border-b-2 border-transparent hover:text-gray-50 focus:text-gray-50 hover:border-white ease-in-out duration-200
+}
+
+.dropdown-item{
+    @apply block px-4 py-2 mt-2 text-sm font-semibold bg-transparent rounded-sm md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-50 focus:bg-gray-50 focus:outline-none
+}
+
+h1,h2,h3,h4,h5,h6{
+    text-align: center;
+    @apply font-semibold
+}
+h1{
+    @apply text-2xl
+}
+h2{
+    @apply text-xl
+}
+h3{
+    @apply text-lg
+}
+h4,h5,h6{
+    @apply text-base
+}
+
+.boton-r-lateral{
+    @apply rounded-r-sm rounded-l-none
+}
+.boton-l-lateral{
+    @apply rounded-l-sm rounded-r-none
+}
+.input-r-lateral{
+    @apply rounded-r-sm rounded-l-none
+}
+.input-l-lateral{
+    @apply rounded-l-sm rounded-r-none
+}
