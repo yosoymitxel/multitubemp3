@@ -10,6 +10,7 @@
         "production": "mix --production"
     },
     "devDependencies": {
+        "@tailwindcss/custom-forms": "^0.2.1",
         "autoprefixer": "^10.3.4",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",

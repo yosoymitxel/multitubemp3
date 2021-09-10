@@ -1,3 +1,72 @@
+<style>
+    .check-container{
+        width: 136%;
+        margin-top: 25px;
+    }
+    input[type=checkbox] {
+        position: absolute;
+        cursor: pointer;
+        width: 0px;
+        height: 0px;
+    }
+
+    input[type=checkbox]:checked:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border: 4px solid #10B981;
+        border-radius: 20px;
+        background-color: #ffffff;
+        transition: all 0.2s linear;
+    }
+
+
+    input[type=checkbox]:before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 34px;
+        height: 34px;
+        border: 4px solid #10B981;
+        border-radius: 3px;
+        background-color: #ffffff;
+    }
+
+
+    input[type=checkbox]:after {
+        content: "";
+        display: block;
+        width: 0px;
+        height: 0px;
+        border: solid #10B981;
+        border-width: 0 0px 0px 0;
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        transform: rotate(180deg);
+        position: absolute;
+        top: 0px;
+        left: 50px;
+        transition: all 0.2s linear;
+    }
+
+    input[type=checkbox]:checked:after {
+        content: "";
+        display: block;
+        width: 12px;
+        height: 21px;
+        border: solid #10B981;
+        border-width: 0 5px 5px 0;
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        transform: rotate(45deg);
+        position: absolute;
+        top: 2px;
+        left: 14px;
+    }
+</style>
+
 @extends('layouts.app')
 
 @section('title', 'Descargar múltiples MP3 de Youtube')
@@ -42,77 +111,97 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,'(https?:\/\/)?
             </div>
             <?php
             if ($seBusca){
-            $i = 0;
-            sc_dom_etiqueta_inicio('div','div-descargas-container-'.$i,'col-12 d-flex justify-content-center');
-            sc_dom_etiqueta_inicio('div','div-descargas-container-row-'.$i,'row justify-content-center text-center');
-            sc_dom_crear_elemento('h2','Enlaces de <span class="span_h2 font-semibold">descarga</span>',false,'h1-descargas-titulo-'.$i,'center header my-2');
-            ?>
-            <div class="col-12">
-                <hr class="my-3">
-            </div>
-            <?php
-            foreach ($_GET as $enlace){
-            if(sc_str_incluye_expresion_regular($enlace,'(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)')){
-            $i++;
-            $enlace = sc_url_get_id_youtube($enlace);
-
-            sc_dom_etiqueta_inicio('div','div-iframe-descarga-'.$i,'col-12 my-2');
-            echo "<h5 id='titulo-musica-$i' class='center header text_h5 mb-4'>$i - ".get_youtube_title($enlace)."</h5>";
-                sc_dom_etiqueta_inicio('div','div-iframe-descarga__contenedor-'.$i,'grid grid-cols-4 px-2');
-                /*echo
-                    '<iframe id="iframe-break-'.$i.'"scrolling="no" class="col-span-3 iframe-youtube"
-                                                    src="https://break.tv/widget/button/?link=https://www.youtube.com/watch?v='.$enlace.'&color=4391D0&text=fff">
-                                                 </iframe>';*/
-                echo "<a href='".sc_url_link_descarga_youtube($enlace)."' class='flex justify-content-center align-items-center font-semibold text-white col-span-3 iframe-youtube button is-secondary'>Descargar</a>";
-                echo
-                    '<iframe id="iframe-youtube-'.$i.'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="col-span-1 iframe-youtube" allowfullscreen
-                                                    src="https://www.youtube.com/embed/'.$enlace.'">
-                                                 </iframe>
-                                            ';
-                sc_dom_etiqueta_fin('div');
-            sc_dom_etiqueta_fin('div');
-            ?>
-            <div class="row justify-content-center m-0 w-50" id="enlaces-alternativos-<?php echo $enlace?>">
-                <div class="col toggle">
-                    <p class="mb-3 pt-2">
-                        <a href="#enlaces-alternativos-<?php echo $enlace?>__div" class="collapsed text-blue-500" aria-expanded="false" aria-controls="enlaces-alternativos-<?php echo $enlace?>__div" data-toggle="collapse">¿No descarga? Aquí hay alternativas</a>
-                    </p>
-                    <div class="grid grid-cols-2 gap-2 justify-content-center m-0 mt-3 collapse" id="enlaces-alternativos-<?php echo $enlace?>__div" style="">
-                        <?php
-
-                        $listaEnlaces = array(
-                            'Y2mate'        => "https://www.y2mate.com/es/youtube/$enlace",
-                            'Flvto'         => "https://www.flyoutube.com/watch?v=$enlace",
-                            'Savefrom'      => "https://www.ssyoutube.com/watch?v=$enlace",
-                            'X2convert'     => "https://www.youtubex2.com/watch?v=$enlace",
-                        );
-                        foreach ($listaEnlaces as $key => $valor) {
-                            sc_dom_etiqueta_inicio('div', 'div-enlaces-alternativos-' . $enlace, 'col-span-1 button is-primary');
-                            sc_dom_crear_elemento_personalizado('a', $key,
-                                array('id',
-                                    'class',
-                                    'href',
-                                    'target'),
-                                array("link-alternativo-$enlace-$key",
-                                    ' w-100 mb-2',
-                                    $valor,
-                                    '_blank'
-                                )
-                            );
-                            sc_dom_etiqueta_fin('div');
-                        }
-                        ?>
-                    </div>
+                $i = 0;
+                sc_dom_etiqueta_inicio('div','div-descargas-container-'.$i,'col-12 d-flex justify-content-center');
+                sc_dom_etiqueta_inicio('div','div-descargas-container-row-'.$i,'row justify-content-center text-center');
+                sc_dom_crear_elemento('h2','Enlaces de <span class="span_h2 font-semibold">descarga</span>',false,'h1-descargas-titulo-'.$i,'center header my-2');
+                ?>
+                <div class="col-12">
+                    <hr class="my-3">
                 </div>
-            </div>
-            <?php
-            }
-            }
-            sc_dom_etiqueta_fin('div');
-            sc_dom_etiqueta_fin('div');
+                <?php
+                foreach ($_GET as $enlace){
+                    if(sc_str_incluye_expresion_regular($enlace,'(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)')){
+                        $i++;
+                        $enlace = sc_url_get_id_youtube($enlace);
+
+                        sc_dom_etiqueta_inicio('div','div-iframe-descarga-'.$i,'col-12 my-2');
+                        echo "<h5 id='titulo-musica-$i' class='center header text_h5 mb-4'>$i - ".get_youtube_title($enlace)."</h5>";
+                        ?>
+                        <div id="check-video-{{$i}}" class="absolute z-index-1 check-container d-none"> <div>
+                                <input type="checkbox" class="form-checkbox">
+                            </div>
+                        </div>
+                        <?php
+                            sc_dom_etiqueta_inicio('div','div-iframe-descarga__contenedor-'.$i,'grid grid-cols-4 px-2');
+                            echo
+                                '<iframe id="iframe-break-'.$i.'"scrolling="no" class="col-span-3 iframe-youtube"
+                                                                src="https://loader.to/api/button/?url=https://www.youtube.com/watch?v='.$enlace.'&f=mp3&color=3B82F6#">
+                                                             </iframe>';
+                            /*
+                            $html = file_get_html('https://www.y2mate.com/es/youtube-mp3/'.$enlace);
+                            // Find all links
+                            foreach($html->find('a') as $element){
+                                echo "<a href='". $element->href ."' target='_blank'>descargar</a>";
+                            }
+                            echo "<a href='".sc_url_link_descarga_youtube($enlace)."' target='_blank' class='flex justify-content-center align-items-center font-semibold text-white col-span-3 iframe-youtube button is-secondary'>Descargar</a>";
+                            */
+                            echo
+                                '<iframe id="iframe-youtube-'.$i.'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="col-span-1 iframe-youtube" allowfullscreen
+                                                                src="https://www.youtube.com/embed/'.$enlace.'">
+                                                             </iframe>
+                                                        ';
+                            sc_dom_etiqueta_fin('div');
+                        sc_dom_etiqueta_fin('div');
+                        ?>
+                        <div class="row justify-content-center m-0 w-50" id="enlaces-alternativos-<?php echo $enlace?>">
+                            <div class="col toggle">
+                                <p class="mb-3 pt-2">
+                                    <a href="#enlaces-alternativos-<?php echo $enlace?>__div" class="collapsed text-blue-500" aria-expanded="false" aria-controls="enlaces-alternativos-<?php echo $enlace?>__div" data-toggle="collapse">¿No descarga? Aquí hay alternativas</a>
+                                </p>
+                                <div class="grid grid-cols-2 gap-2 justify-content-center m-0 mt-3 collapse" id="enlaces-alternativos-<?php echo $enlace?>__div" style="">
+                                    <?php
+            // https://www.youtubegomp3.com/watch?v=pOmu0LtcI6Y
+                                    $listaEnlaces = array(
+                                        'Y2mate'        => "https://www.y2mate.com/es/youtube/$enlace",
+                                        'Flvto'         => "https://www.flyoutube.com/watch?v=$enlace",
+                                        'Savefrom'      => "https://www.ssyoutube.com/watch?v=$enlace",
+                                        'X2convert'     => "https://www.youtubex2.com/watch?v=$enlace",
+                                    );
+                                    foreach ($listaEnlaces as $key => $valor) {
+                                        sc_dom_etiqueta_inicio('div', 'div-enlaces-alternativos-' . $enlace, 'col-span-1 button is-primary');
+                                        sc_dom_crear_elemento_personalizado('a', $key,
+                                            array('id',
+                                                'class',
+                                                'href',
+                                                'target'),
+                                            array("link-alternativo-$enlace-$key",
+                                                ' w-100 mb-2',
+                                                $valor,
+                                                '_blank'
+                                            )
+                                        );
+                                        sc_dom_etiqueta_fin('div');
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }
+                sc_dom_etiqueta_fin('div');
+                sc_dom_etiqueta_fin('div');
             }?>
         </div>
     </div>
 </section>
+<script>
+    window.onload = function() {
+        $('.check-container').addClass('d-block')
+        $('.check-container').removeClass('d-none')
+        $('.check-container').css('width',(($('#iframe-break-1').width()*2)-12)+'px')
+    };
 
+</script>
 @endsection

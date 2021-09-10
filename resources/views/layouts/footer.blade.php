@@ -1,6 +1,6 @@
-<footer id="footer" class="align-self-end text-white">
-    <div class="container bg-gradient-to-r from-blue-500 via-blue-600  to-blue-500">
-        <div class="row  px-3 py-5">
+<footer id="footer" class="align-self-end text-white w-100">
+    <div class="bg-gradient-to-r from-blue-500 via-blue-600  to-blue-500 w-100">
+        <div class="row  px-3 py-5 m-0">
             <div class="col-lg-6 col-12">
                 <h3 class="font-weight-bold">ADVERTENCIA:</h3>
                 <ul class="text-left text-sm-justify">
