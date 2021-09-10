@@ -75,7 +75,8 @@
 @section('content')
 
 <?php
-$seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,'(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/\(w+|\-)+'):false;
+define('REGEX_YOUTUBE', '(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)');
+$seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):false;
 ?>
 
 <section id="formulario-enlaces" class="">
@@ -121,7 +122,7 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,'(https?:\/\/)?
                 </div>
                 <?php
                 foreach ($_GET as $enlace){
-                    if(sc_str_incluye_expresion_regular($enlace,'(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)')){
+                    if(sc_str_incluye_expresion_regular($enlace,REGEX_YOUTUBE)){
                         $i++;
                         $enlace = sc_url_get_id_youtube($enlace);
 
