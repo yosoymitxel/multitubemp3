@@ -29,7 +29,7 @@ $arrJuegos = json_decode(sc_url_curl('https://www.gamerpower.com/api/giveaways?t
                 @if($game->worth != 'N/A')
                     <div class="h-full rounded-sm flex flex-col overflow-hidden">
                         <img class="md:w-48 rounded-t-md mx-auto" src="{{ $game->thumbnail }}" alt="" width="" height="120">
-                        <p class="text-lg font-semibold">{{ sc_str_reemplazar_expresion_regular($game->title,'(\Free\s)|(Get\s)|(\s?on\sPC)|\(PC\)|(for FREE(\s\W)?)|(!$)','') }}</p>
+                        <p class="text-lg font-semibold">{{ sc_str_reemplazar_expresion_regular($game->title,'(Free\s)|(Get\s)|(\s?on\sPC)|\(PC\)|(for FREE(\s\W)?)|(!$)','') }}</p>
                         <p class=""><span class="text-sm font-semibold line-through text-red-600">{{ $game->worth }}</span> <span class="font-semibold text-green-500">Gratis</span></p>
                         <a class="flex items-center mt-auto block button is-primary p-1 justify-content-center rounded-xl" target="_blank" href="{{ $game->open_giveaway_url }}">Ver oferta</a>
                     </div>
