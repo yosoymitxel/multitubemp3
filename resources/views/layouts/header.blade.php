@@ -13,9 +13,9 @@
         </div>
         <nav id="navbar" :class="{'flex': open, 'hidden': !open}" class="flex-col flex-grow md:pb-0 hidden md:flex md:justify-end md:flex-row">
             <a href="/" class="navbar-item">Inicio</a>
-            <a class="navbar-item pb-3" href="http://www.linkea.ga/" target="_blank">Linkea</a>
+            <a class="navbar-item pb-3" href="http://www.linkea.epizy.com/" target="_blank">Linkea</a>
             <a class="navbar-item pb-3" href="https://github.com/yosoymitxel/" target="_blank">Desarrollador</a>
-            <a href="https://github.com/yosoymitxel/mutitubemp3.git" class="flex bg-white rounded-sm p-1 px-4 mr-2 text-green-700 font-weight-bold">
+            <a href="https://github.com/yosoymitxel/multitubemp3.git" class="flex bg-white rounded-sm p-1 px-4 mr-2 text-green-700 font-weight-bold">
                 <span class="justify-content-center align-self-center">Proyecto Open Source</span>
             </a>
         </nav>

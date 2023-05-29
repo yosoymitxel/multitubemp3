@@ -5,7 +5,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'MutitubeMP3') }} | @yield('title')</title>
+    <title>{{ config('app.name', 'multitubeMP3') }} | @yield('title')</title>
 
     <meta name="viewport"           content="user-scalable=no, width=device-width,initial-scale=1">
     <meta name="description"        content="@yield('descripcion')">
@@ -13,14 +13,14 @@
     <!--Facebook-->
     <meta property="og:url"         content="{{ __(url()->full()) }}">
     <meta property="og:type"        content="website">
-    <meta property="og:title"       content="MutitubeMP3 | @yield('title')">
+    <meta property="og:title"       content="multitubeMP3 | @yield('title')">
     <meta property="og:description" content="@yield('descripcion') ">
     <meta property="og:image"       content="{{ asset('images/banner/logo-original.png') }}">
     <!--twitter-->
     <meta property="twitter:url"    content="{{ __(url()->full()) }}">
     <meta name="twitter:card"       content="summary" />
-    <meta name="twitter:site"       content="MutitubeMP3" />
-    <meta name="twitter:title"      content="MutitubeMP3 |  @yield('title')">
+    <meta name="twitter:site"       content="multitubeMP3" />
+    <meta name="twitter:title"      content="multitubeMP3 |  @yield('title')">
     <meta name="twitter:description"content="@yield('descripcion') ">
     <meta name="twitter:image"      content="{{ asset('images/banner/logo-original.png') }}">
     <!--Iconos-->
