@@ -1,51 +1,67 @@
-version: "3.8"
+version: "3.7"
 
 services:
-    server:
+    # image project
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on:
+            - redis
+        networks:
+            - laravel
+
+    # nginx
+    nginx:
         image: nginx:alpine
         restart: unless-stopped
         ports:
-            - 81:80
-        networks:
-            - app-network
+            - "8989:80"
         volumes:
             - ./:/var/www
-            - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./docker/nginx/:/etc/nginx/conf.d/
+        networks:
+            - laravel
 
+    # db mysql
     db:
-        image: mysql:5.7.33
+        image: mysql:5.7.22
         restart: unless-stopped
-        env_file:
-            - .env
         environment:
-            MYSQL_DATABASE: $DB_DATABASE
-            MYSQL_ROOT_PASSWORD: $DB_PASSWORD
-        networks:
-            - app-network
+            MYSQL_DATABASE: ${DB_DATABASE:-laravel}
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-root}
+            MYSQL_PASSWORD: ${DB_PASSWORD:-userpass}
+            MYSQL_USER: ${DB_USERNAME:-username}
         volumes:
-            - dbdata:/var/lib/mysql
+            - ./.docker/mysql/dbdata:/var/lib/mysql
+        ports:
+            - "3388:3306"
+        networks:
+            - laravel
 
-    app:
-        build: .
+    # PHPMyAdmin
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
         restart: unless-stopped
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOST: db
+            PMA_PORT: 3306
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-userpass}
         networks:
-            - app-network
-        volumes:
-            - ./:/var/www
+            - laravel
 
-    node:
-        image: node:15-alpine
-        working_dir: /var/www
-        volumes:
-            - ./:/var/www
-            - /var/www/node_modules
-        command: sh /var/www/node_start.sh
-        depends_on:
-            - app
+    # redis
+    redis:
+        image: redis:latest
+        networks:
+            - laravel
 
 networks:
-    app-network:
+    laravel:
         driver: bridge
-
-volumes:
-    dbdata:
