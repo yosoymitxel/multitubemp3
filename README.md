@@ -9,3 +9,6 @@ https://brave.com/es/download/
 
 # Web Oficial
 http://multitubemp3.free.nf/
+
+# Dockerizado con:
+https://github.com/especializati/setup-docker-laravel
