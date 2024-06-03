@@ -39,4 +39,13 @@ WORKDIR /var/www
 # Copy custom configurations PHP
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 
+
+
+# Install project dependencies using Composer
+# COPY composer.json ./
+# RUN composer install
+
+# Generate Laravel application key
+# RUN php artisan key:generate
+
 USER $user

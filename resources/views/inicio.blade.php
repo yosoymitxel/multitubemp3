@@ -75,7 +75,7 @@
 @section('content')
 
 <?php
-define('REGEX_YOUTUBE', '(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)');
+define('REGEX_YOUTUBE', '(https?:\/\/)?(www\.)?(music\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)');
 $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):false;
 ?>
 
@@ -91,7 +91,7 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                     <div id="div-form-container" class="col-11 pr-3 pr-sm-0">
                         <div id="form-div-enlace-01"class="col-md-12 mb-3 pr-3 pr-sm-0">
                             <label for="enlace-01">Link de vídeo de YouTube Nr. 1</label>
-                            <input type="text" class="form-control" id="enlace-01" name="enlace-01" placeholder="https://www.youtube.com/watch?v=sFlxgZ8kgMI" value="" pattern="(https?://)?(www\.)?(youtube\.com/watch\?v=(\w+|-)+|youtu\.be/(\w+|-)+)" required>
+                            <input type="text" class="form-control" id="enlace-01" name="enlace-01" placeholder="https://www.youtube.com/watch?v=sFlxgZ8kgMI" value="" pattern="<?php echo REGEX_YOUTUBE; ?>" required>
                             <div class="valid-feedback">
                                 !El enlace es correcto!
                             </div>
@@ -139,14 +139,6 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                                 '<iframe id="iframe-break-'.$i.'"scrolling="no" class="col-span-3 iframe-youtube"
                                                                 src="https://loader.to/api/button/?url=https://www.youtube.com/watch?v='.$enlace.'&f=mp3&color=3B82F6#">
                                                              </iframe>';
-                            /*
-                            $html = file_get_html('https://www.y2mate.com/es/youtube-mp3/'.$enlace);
-                            // Find all links
-                            foreach($html->find('a') as $element){
-                                echo "<a href='". $element->href ."' target='_blank'>descargar</a>";
-                            }
-                            echo "<a href='".sc_url_link_descarga_youtube($enlace)."' target='_blank' class='flex justify-content-center align-items-center font-semibold text-white col-span-3 iframe-youtube button is-secondary'>Descargar</a>";
-                            */
                             echo
                                 '<iframe id="iframe-youtube-'.$i.'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="col-span-1 iframe-youtube" allowfullscreen
                                                                 src="https://www.youtube.com/embed/'.$enlace.'">
@@ -162,7 +154,7 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                                 </p>
                                 <div class="grid grid-cols-2 gap-2 justify-content-center m-0 mt-3 collapse" id="enlaces-alternativos-<?php echo $enlace?>__div" style="">
                                     <?php
-            // https://www.youtubegomp3.com/watch?v=pOmu0LtcI6Y
+                                    // https://www.youtubegomp3.com/watch?v=pOmu0LtcI6Y
                                     $listaEnlaces = array(
                                         'Y2mate'        => "https://www.y2mate.com/es/youtube/$enlace",
                                         'Flvto'         => "https://www.flyoutube.com/watch?v=$enlace",
@@ -170,14 +162,14 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                                         'X2convert'     => "https://www.youtubex2.com/watch?v=$enlace",
                                     );
                                     foreach ($listaEnlaces as $key => $valor) {
-                                        sc_dom_etiqueta_inicio('div', 'div-enlaces-alternativos-' . $enlace, 'col-span-1 button is-primary');
+                                        sc_dom_etiqueta_inicio('div', 'div-enlaces-alternativos-' . $enlace, 'col-span-1 button is-primary p-0 d-flex justify-content-center align-items-center','height: 50px ');
                                         sc_dom_crear_elemento_personalizado('a', $key,
                                             array('id',
                                                 'class',
                                                 'href',
                                                 'target'),
                                             array("link-alternativo-$enlace-$key",
-                                                ' w-100 mb-2',
+                                                ' w-100 ',
                                                 $valor,
                                                 '_blank'
                                             )
