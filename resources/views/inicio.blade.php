@@ -135,17 +135,17 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                         </div>
                         <?php
                             sc_dom_etiqueta_inicio('div','div-iframe-descarga__contenedor-'.$i,'grid grid-cols-4 px-2');
-                            echo
-                                '<iframe id="iframe-break-'.$i.'"scrolling="no" class="col-span-3 iframe-youtube"
-                                                                src="https://loader.to/api/button/?url=https://www.youtube.com/watch?v='.$enlace.'&f=mp3&color=3B82F6#">
-                                                             </iframe>';
-                            echo
-                                '<iframe id="iframe-youtube-'.$i.'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="col-span-1 iframe-youtube" allowfullscreen
-                                                                src="https://www.youtube.com/embed/'.$enlace.'">
-                                                             </iframe>
-                                                        ';
+                                echo
+                                    '<iframe id="iframe-break-'.$i.'"scrolling="no" class="col-span-3 iframe-youtube"
+                                                                    src="https://loader.to/api/button/?url=https://www.youtube.com/watch?v='.$enlace.'&f=mp3&color=3B82F6#">
+                                                                </iframe>';
+                                echo
+                                    '<iframe id="iframe-youtube-'.$i.'" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" class="col-span-1 iframe-youtube" allowfullscreen
+                                                                    src="https://www.youtube.com/embed/'.$enlace.'">
+                                                                </iframe>
+                                                            ';
+                                sc_dom_etiqueta_fin('div');
                             sc_dom_etiqueta_fin('div');
-                        sc_dom_etiqueta_fin('div');
                         ?>
                         <div class="row justify-content-center m-0 w-50" id="enlaces-alternativos-<?php echo $enlace?>">
                             <div class="col toggle">
@@ -157,9 +157,9 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                                     // https://www.youtubegomp3.com/watch?v=pOmu0LtcI6Y
                                     $listaEnlaces = array(
                                         'Y2mate'        => "https://www.y2mate.com/es/youtube/$enlace",
-                                        'Flvto'         => "https://www.flyoutube.com/watch?v=$enlace",
-                                        'Savefrom'      => "https://www.ssyoutube.com/watch?v=$enlace",
                                         'X2convert'     => "https://www.youtubex2.com/watch?v=$enlace",
+                                        'Savefrom'      => "https://www.ssyoutube.com/watch?v=$enlace",
+                                        'Flvto'         => "https://www.flyoutube.com/watch?v=$enlace",
                                     );
                                     foreach ($listaEnlaces as $key => $valor) {
                                         sc_dom_etiqueta_inicio('div', 'div-enlaces-alternativos-' . $enlace, 'col-span-1 button is-primary p-0 d-flex justify-content-center align-items-center','height: 50px ');
