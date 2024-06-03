@@ -5,13 +5,13 @@
 # Web Oficial
 http://multitubemp3.free.nf/
 
-**Características:**
+## Características:
 
 * Descarga y convierte vídeos de Youtube a MP3.
 * Soporta la descarga de múltiples canciones a la vez.
 * Interfaz amigable y fácil de usar.
 
-**Instalación:**
+## Instalación:
 
 La instalación de MultitubeMP3 requiere un servidor web con PHP y Composer instalados. Los pasos específicos pueden variar dependiendo de tu configuración, pero en general se resumen a:
 
@@ -21,7 +21,7 @@ La instalación de MultitubeMP3 requiere un servidor web con PHP y Composer inst
 4. Crear un archivo `.env` (copiando de `.env.example`) y configurando las variables de entorno necesarias.
 5. `php artisan key:generate`
 
-**Uso:**
+## Uso:
 
 Una vez instalado, podrás acceder a la aplicación web de MultitubeMP3 desde tu navegador. La interfaz te permitirá pegar las URLs de los videos de Youtube que deseas descargar y convertir. Luego, podrás iniciar el proceso de descarga y conversión, y finalmente acceder a los archivos MP3 obtenidos.
 
@@ -33,12 +33,11 @@ https://brave.com/es/download/
 https://github.com/especializati/setup-docker-laravel
 
 
-
-**Nota importante:**
+# Nota importante:
 
 Descargar y convertir videos de Youtube puede estar sujeto a restricciones de copyright dependiendo de los videos específicos. Utiliza MultitubeMP3 de manera responsable y solo con contenido que te pertenezca o del cual tengas los derechos de uso.
 
 
-**Contribuyendo a MultitubeMP3**
+# Contribuyendo a MultitubeMP3
 
 ¿Quieres colaborar con el desarrollo de MultitubeMP3? ¡Genial! El proyecto se encuentra disponible en un repositorio público, por lo que puedes contribuir reportando errores, sugiriendo mejoras e incluso añadiendo nuevas funcionalidades. Revisa la documentación del proyecto para conocer las guías de contribución.

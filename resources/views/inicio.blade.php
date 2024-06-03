@@ -169,7 +169,7 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                                                 'href',
                                                 'target'),
                                             array("link-alternativo-$enlace-$key",
-                                                ' w-100 ',
+                                                ' w-100 h-100 d-flex justify-content-center align-items-center ',
                                                 $valor,
                                                 '_blank'
                                             )
