@@ -105,7 +105,7 @@ if(isset($_GET['isplaylist']) && $_GET['isplaylist'] == 'on'){
                 <form class="needs-validation row justify-content-center" onsubmit="validacionEnlaces(true)" novalidate>
                     <div id="contenedor-es-playlist">
                         <div class="switch">
-                            <h2 class="mb-3">Es una playlist? <input id="isplaylist" name="isplaylist" type="checkbox" class="ml-2"></h2>
+                            <h2 class="mb-3">Descargar también músicas relacionadas? <input id="isplaylist" name="isplaylist" type="checkbox" class="ml-2"></h2>
                         </div>
                     </div>
                     <div id="div-form-container" class="col-11 pr-3 pr-sm-0">
