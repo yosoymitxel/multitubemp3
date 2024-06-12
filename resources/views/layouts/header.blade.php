@@ -2,7 +2,7 @@
     <div id="header__contenido" x-data="{ open: false }" class="flex flex-col px-0 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
         <div id="boton-logo" class="px-4 flex flex-row items-center justify-between">
             <a id="logo__contenedor"class="" href="/">
-                <a href="#" id="logo-container" class="brand-logo">Multi<span class=" text-blue-700 font-semibold">Tube</span>MP3</a>
+                <a href="/" id="logo-container" class="brand-logo">Multi<span class=" text-blue-700 font-semibold">Tube</span>MP3</a>
             </a>
             <button id="btn-fill" class="md:hidden rounded-lg focus:outline-none focus:shadow-outline" @click="open = !open">
                 <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">

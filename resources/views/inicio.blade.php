@@ -92,13 +92,6 @@ if(isset($_GET['isplaylist']) && $_GET['isplaylist'] == 'on'){
     $enlaces = $_GET;
 }
 
-
-
-
-
-
-
-
 ?>
 
 <section id="formulario-enlaces" class="">
