@@ -13,36 +13,7 @@
     </div>
 </section>
 <script id="get-games">
-    function getGames() {
-  $.ajax({
-    url: 'https://gamerpower.p.rapidapi.com/api/giveaways?type=game',
-    dataType: 'json',
-    headers: {
-      'X-RapidAPI-Key': 'a011259af4mshbfc3b1375ec8dcdp16897bjsn632c0e6f5730',
-      'X-RapidAPI-Host': 'gamerpower.p.rapidapi.com'
-    },
-    success: function(data) {
-      if (Array.isArray(data)) {
-        $('#acerca-de').append('<div id="juegos-gratis__contenedor" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 overflow-auto scrollbar" style="max-height: 500px"></div>') 
-        var juegosContenedor = $('#juegos-gratis__contenedor');
-        juegosContenedor.empty();
-          console.log(data)
-        data.forEach(function(game) {
-          if (game.worth != 'N/A') {
-            var juego = $('<div>', {class: 'h-full rounded-sm flex flex-col overflow-hidden'});
-            var imagen = $('<img>', {class: 'md:w-48 rounded-t-md mx-auto', src: game.thumbnail, alt: '', height: 120});
-            var titulo = $('<p>', {class: 'text-lg font-semibold', text: game.title.replace(/(Free\s)|(Get\s)|(\s?on\sPC)|\(PC\)|(for FREE(\s\W)?)|(!\$)/g, '')});
-            var precio = $('<p>', {class: '', html: '<span class="text-sm font-semibold line-through text-red-600">' + game.worth + '</span> <span class="font-semibold text-green-500">Gratis</span>'});
-            var oferta = $('<a>', {class: 'flex items-center mt-auto block button is-primary p-1 justify-content-center rounded-xl', target: '_blank', href: game.open_giveaway_url, text: 'Ver oferta'});
-            juego.append(imagen, titulo, precio, oferta);
-            juegosContenedor.append(juego);
-          }
-        });
-      }
-    },
-    error: function(jqXHR, textStatus, errorThrown) {
-      console.log('Error:', textStatus, errorThrown);
-    }
-  });
-}
+  window.onload = (event) => {
+      getGames() 
+  };
 </script>
