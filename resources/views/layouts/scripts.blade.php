@@ -42,7 +42,9 @@
         for(let i=0; i<cantidadEnlaces;i++){
             let valorEnlace = dev_str_quitar_espacios_blancos(dev_dom_value(`#enlace-0${i+1}`));
             if ( dev_is_string(dev_dom_value(`#enlace-0${i+1}`),1)){
-                $(`#enlace-0${i+1}`).val(dev_str_reemplazar_expresion_regular(valorEnlace,'(&(\\w+)=(\\w+))',''));
+                if($('#isplaylist').val() != 'on'){
+                    $(`#enlace-0${i+1}`).val(dev_str_reemplazar_expresion_regular(valorEnlace,'(&(\\w+)=(\\w+))',''));
+                }
                 if(submit && !dev_is_string($(`#enlace-0${i+1}`).val(),3)){
                     $(`#form-div-enlace-0${i+1}`).remove()
                 }

@@ -76,7 +76,29 @@
 
 <?php
 define('REGEX_YOUTUBE', '(https?:\/\/)?(www\.)?(music\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)');
-$seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):false;
+$seBusca = (isset($_GET)) ? sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):false;
+$enlaces = [];
+
+if(isset($_GET['isplaylist']) && $_GET['isplaylist'] == 'on'){
+    foreach ($_GET as $enlace){
+        //sc_var_dump('ENlace'.$enlace);
+        
+        if(sc_str_incluye_expresion_regular($enlace,REGEX_YOUTUBE)){
+            $enlaces[] = sc_url_youtube_extraer_enlaces_de_video_lista_de_reproduccion($enlace);
+        }
+    }
+    $enlaces = $enlaces[0];
+}else{
+    $enlaces = $_GET;
+}
+
+
+
+
+
+
+
+
 ?>
 
 <section id="formulario-enlaces" class="">
@@ -88,6 +110,11 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
             </header>
             <div id="div-formulario-enlaces" class="col-12 d-flex justify-content-center">
                 <form class="needs-validation row justify-content-center" onsubmit="validacionEnlaces(true)" novalidate>
+                    <div id="contenedor-es-playlist">
+                        <div class="switch">
+                            <h2 class="mb-3">Es una playlist? <input id="isplaylist" name="isplaylist" type="checkbox" class="ml-2"></h2>
+                        </div>
+                    </div>
                     <div id="div-form-container" class="col-11 pr-3 pr-sm-0">
                         <div id="form-div-enlace-01"class="col-md-12 mb-3 pr-3 pr-sm-0">
                             <label for="enlace-01">Link de vídeo de YouTube Nr. 1</label>
@@ -121,13 +148,13 @@ $seBusca = (isset($_GET))?sc_arr_incluye_expresion_regular($_GET,REGEX_YOUTUBE):
                     <hr class="my-3">
                 </div>
                 <?php
-                foreach ($_GET as $enlace){
+                foreach ($enlaces as $enlace){
                     if(sc_str_incluye_expresion_regular($enlace,REGEX_YOUTUBE)){
                         $i++;
                         $enlace = sc_url_get_id_youtube($enlace);
 
                         sc_dom_etiqueta_inicio('div','div-iframe-descarga-'.$i,'col-12 my-2');
-                        echo "<h5 id='titulo-musica-$i' class='center header text_h5 mb-4'>$i - ".get_youtube_title($enlace)."</h5>";
+                        echo "<h5 id='titulo-musica-$i' class='center header text_h5 mb-4'>$i - ".sc_url_get_youtube_title($enlace)."</h5>";
                         ?>
                         <div id="check-video-{{$i}}" class="absolute z-index-1 check-container d-none"> <div>
                                 <input type="checkbox" class="form-checkbox">

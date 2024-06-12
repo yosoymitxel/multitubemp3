@@ -1,7 +1,7 @@
 <?php
 /*
 Librería SC PHP
-Fecha de inicio: 11/08/2020
+Fecha de inicio: 3/08/2020
 
 Lista de categorías:
 
@@ -21,16 +21,16 @@ IS      = Tipo de variable
 /*###DEV###*/
 
 function sc_dev_var_dump($obj,$etiqueta='',$id='',$class='',$style=''){
-    echo (!sc_dom_etiqueta_inicio($etiqueta)) ?
-        "<pre id='$id' class='$class' style='$style'>" :
-        "<$etiqueta id='$id' class='$class' style='$style'>";
-    var_dump($obj);
-    echo (!sc_dom_etiqueta_inicio($etiqueta)) ? '</pre>' : "</$etiqueta>";
-    sc_dom_etiqueta_fin($etiqueta);
+        echo (!sc_dom_etiqueta_inicio($etiqueta)) ?
+            "<pre id='$id' class='$class' style='$style'>" :
+            "<$etiqueta id='$id' class='$class' style='$style'>";
+        var_dump($obj);
+        echo (!sc_dom_etiqueta_inicio($etiqueta)) ? '</pre>' : "</$etiqueta>";
+        sc_dom_etiqueta_fin($etiqueta);
 }
 
 function sc_dev_echo($t,$valor='',$etiqueta='p',$id='',$class='',$style='',$name=''){
-        $valor = ($valor != '') ? ' : ' . $valor : '';
+        $valor = ($valor!='') ?  ' : '.$valor: '';
         echo("<$etiqueta id='$id' class='$class' style='$style' name='$name'>$t$valor</$etiqueta>");
 }
 
@@ -47,20 +47,24 @@ function sc_dev_echo_indice($titulo,$texto,$etiqueta='p',$id='',$class='',$style
 
 function sc_dev_contador_texto_para_pruebas($texto='Prueba',$valor = false) {
     static $index = 0;
+    
     if($valor===0){
         $index = 0;
     }
+
     $index++;
     echo "<p id='".sc_str_sin_caracteres_especiales($texto)."-$index' class='m-0 p-0 w-100'>$texto: $index</p>";
 }
 
 function sc_dev_echo_oculto($texto,$depurar=false,$id='id-oculto',$clase=''){
     echo "<div style='display: none;' class='$clase' id='$id'>";
+    
     if ($depurar){
         sc_var_dump($texto);
     }else{
         echo "<p>$texto</p>";
     }
+
     echo '</div>';
 }
 
@@ -68,14 +72,17 @@ function sc_dev_depurar($condicion,$obj,$id='id-depuracion'){
     if($condicion){
         sc_dom_etiqueta_inicio('div',"debug-$id",'w-100');
         sc_dom_crear_elemento('h3',$id,"debug-$id");
+        
         if(sc_is_array($obj,1)){
             $i = 0;
+            
             foreach ($obj as $value){
                 sc_var_dump($value,null,"var-dump__$id-".++$i);
             }
         }else{
             sc_var_dump($obj,"var-dump__$id");
         }
+
         sc_dom_etiqueta_fin('div');
     }
 }
@@ -94,12 +101,12 @@ function sc_echo($t,$valor='',$etiqueta='p',$id='',$class='',$style='',$name='')
 }
 
 
-
 /*###DOM###*/
 
 function sc_dom_get_atributos($arrayAtributos,$depurar=false){
     if(sc_is_array($arrayAtributos)){
         $atributos = '';
+        
         sc_dev_depurar(
             $depurar,
             array(
@@ -112,12 +119,15 @@ function sc_dom_get_atributos($arrayAtributos,$depurar=false){
             if($depurar){
                 sc_var_dump($atributo.' : '.$valor,'p');
             }
+
             $atributos .= ($valor)? $atributo.'="'.$valor.'", ' : '';
         }
 
         $atributos = implode(' ',(explode(',',$atributos)));
+        
         return $atributos;
     }
+
     return false;
 }
 
@@ -155,26 +165,31 @@ function sc_dom_crear_elemento_personalizado($etiqueta,$contenido,$arrayTipoAtri
     $arrayTemp = array_combine($arrayTipoAtributos,$arrayValorAtributos);
     $atributos = sc_dom_get_atributos($arrayTemp);
     echo "<$etiqueta $atributos>$contenido";
+   
     if($etiquetaCerrada){
         echo "</$etiqueta>";
     }
 }
 
 function sc_dom_crear_elemento_input($type='text',$value='',$id='',$name='',$class='',$style=''){
-    $name = (isset($name[1]))?$name:$id;
+    $name = (isset($name{1}))?$name:$id;
     sc_dom_crear_elemento_sin_cerrar('input',false,$value,$id,$class,$style,$name,$type);
 }
 
 function sc_dom_etiqueta_inicio($etiqueta='',$id='',$class='',$style='',$name=''){
-    if(isset($etiqueta[1])){
+    if(isset($etiqueta{1})){
         $atributos = array('id'=>$id,'class'=>$class,'style'=>$style,'name'=>$name);
         $elemento  = "<$etiqueta ";
+      
         foreach ($atributos as $atributo => $valor){
             $elemento .= ($atributo)? $atributo.'="'.$valor.'" ' : '';
         }
+
         echo $elemento.">";
+
         return true;
     }
+
     return false;
 }
 
@@ -183,11 +198,13 @@ function sc_dom_etiqueta_fin($etiqueta){
         echo "</$etiqueta>";
         return true;
     }
+
     return false;
 }
 
 function sc_dom_cdn($id,$link,$tipo='css',$depurar=false){
     sc_dev_depurar($depurar,array($id,$link,$tipo),'sc_dom_cdn');
+    
     switch ($tipo){
         case 'js':
         case 'javascript':
@@ -201,19 +218,52 @@ function sc_dom_cdn($id,$link,$tipo='css',$depurar=false){
     }
 }
 
-/*###URL###*/
-function get_youtube_title($video_id){
-    $url = "http://www.youtube.com/watch?v=".$video_id;
+function sc_dom_generar_tabla($arrayContenido, $arrayTitulos = [], $id = '', $class='' ){
+        if(sc_is_array($arrayContenido)){
+            $tableHtml = "<table id='$id' class='$class'>";
 
-    $str = file_get_contents($url);
-    if(strlen($str)>0){
-        $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
-        preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
-        return (sc_is_array($title,1)) ?
-            sc_str_reemplazar_expresion_regular($title[1],'/( \- YouTube)/','') :
-            'Título no encontrado';
-    }
+            if(sc_arr_contiene_keys($arrayContenido) && !$arrayTitulos){
+                $arrayTitulos = array_keys($arrayContenido);
+            }
+
+            if(!$arrayTitulos){
+                $tableHtml .= '<thead>
+                                <th>';
+
+                foreach($arrayTitulos as $value){
+                    $tableHtml .= "<td>$value</td>";
+                }
+
+                $tableHtml .= '</th>
+                            </thead>';
+            }
+
+            $tableHtml .= '<tbody>';
+
+            foreach($arrayContenido as $value){
+                if(sc_is_array($value)){
+                    $tableHtml .= '<tr>';
+
+                    foreach( $value as $row){
+                        $tableHtml .= "<td>$row</td>";
+                    }
+
+                    $tableHtml .= '</tr>';
+
+                }else{
+                    $tableHtml .= "<tr><td>$value</td></tr>";
+                }
+            }
+
+            $tableHtml .= '</tbody>
+                        </table>';
+        }
+
+        return false;
 }
+
+
+/*###URL###*/
 
 function sc_url_link_descarga_youtube($video_id){
     $html = file_get_html('https://www.yt-download.org/file/mp3/'.$video_id);
@@ -224,7 +274,6 @@ function sc_url_link_descarga_youtube($video_id){
         }
     }
 }
-
 function sc_url_informacion_sitio_actual(){
     $indicesServer = array('PHP_SELF',
         'argv',
@@ -268,6 +317,7 @@ function sc_url_informacion_sitio_actual(){
         'ORIG_PATH_INFO') ;
 
     echo '<table cellpadding="10">' ;
+  
     foreach ($indicesServer as $arg) {
         if (isset($_SERVER[$arg])) {
             echo '<tr><td>'.$arg.'</td><td>' . $_SERVER[$arg] . '</td></tr>' ;
@@ -276,6 +326,7 @@ function sc_url_informacion_sitio_actual(){
             echo '<tr><td>'.$arg.'</td><td>-</td></tr>' ;
         }
     }
+
     echo '</table>' ;
 }
 
@@ -312,12 +363,14 @@ function sc_url_get_servidor($url){
         $urlProcesada = str_replace('https://','',$url[0]);
         $urlProcesada = str_replace('http://','',$urlProcesada);
     }
+
     return $urlProcesada;
 }
 
 function sc_url_borrar_cookies($depurar=false){
     if (isset($_SERVER['HTTP_COOKIE'])) {
         $cookies = explode(';', $_SERVER['HTTP_COOKIE']);
+       
         foreach($cookies as $cookie) {
             $parts = explode('=', $cookie);
             $name  = trim($parts[0]);
@@ -329,11 +382,12 @@ function sc_url_borrar_cookies($depurar=false){
 
 function sc_url_get_youtube_title($video_id){
     $url = "http://www.youtube.com/watch?v=".$video_id;
-
     $str = file_get_contents($url);
+    
     if(strlen($str)>0){
         $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
         preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
+      
         return sc_str_reemplazar_expresion_regular($title[1],'/( \- YouTube)/','');
     }
 }
@@ -341,6 +395,7 @@ function sc_url_get_youtube_title($video_id){
 function sc_url_get_id_youtube($urlYoutube){
     $expresionUrl     = sc_str_corregir_expresion_regular('(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=(\w+|\-)+|youtu\.be\/(\w+|\-)+)');
     $expresionIdVideo = sc_str_corregir_expresion_regular('(((\?v=)[\w\-]+)|be\/\w+)');
+   
     return (sc_str_incluye_expresion_regular($urlYoutube,$expresionUrl)) ?
         substr(sc_str_extraer_expresion_regular($urlYoutube, $expresionIdVideo),3) :
         false;
@@ -349,6 +404,7 @@ function sc_url_get_id_youtube($urlYoutube){
 function sc_url_generar_iframe_youtube($link,$return=false,$altura='30vh',$ancho='100%',$class="pt-2",$depurar=false){
     sc_dev_depurar($depurar,array($link,$altura,$ancho),'sc_url_generar_iframe_youtube');
     $enlace = sc_url_get_id_youtube(sc_str_quitar_espacios_blancos($link));
+   
     if($enlace){
         $altura = sc_str_incluye_expresion_regular($altura,'\d+(\%|px|vh|vmin|vw)')?($altura):($altura.'px');
         $ancho   = sc_str_incluye_expresion_regular($ancho  ,'\d+(\%|px|vh|vmin|vw)')?($ancho)  :  ($ancho.'px');
@@ -359,9 +415,11 @@ function sc_url_generar_iframe_youtube($link,$return=false,$altura='30vh',$ancho
                 </iframe>
             </div>
         ';
+      
         if ($return){
             return $iframe;
         }
+
         echo $iframe;
         return true;
     }else{
@@ -369,7 +427,24 @@ function sc_url_generar_iframe_youtube($link,$return=false,$altura='30vh',$ancho
     }
 }
 
-function dev_url_descargar_imagen_al_servidor($url,$direccionCarpeta='assets/archivos/logos'){
+function sc_url_youtube_extraer_enlaces_de_video_lista_de_reproduccion($urlListaDeReproduccion) {
+  // Obtener el HTML de la lista de reproducción
+  $htmlListaDeReproduccion = file_get_contents($urlListaDeReproduccion);
+
+  // Analizar el HTML para extraer los ID de los videos
+  preg_match_all('/watch\?v=(?P<videoID>[a-zA-Z0-9-_]{11})/', $htmlListaDeReproduccion, $coincidencias);
+  $idsDeVideo = $coincidencias['videoID'];
+
+  // Construir las URLs completas de los videos
+  $enlacesDeVideo = array_map(function ($idDeVideo) {
+    return "https://www.youtube.com/watch?v=$idDeVideo";
+  }, $idsDeVideo);
+
+  // Devolver una lista única de enlaces de video (eliminando duplicados)
+  return array_unique($enlacesDeVideo);
+}
+
+function sc_url_descargar_imagen_al_servidor($url,$serverURl , $direccionCarpeta='assets/archivos/logos'){
     $url = (sc_str_inicia_con($url,'http://') || sc_str_inicia_con($url,'https://'))?
         $url :
         'http://'.$url ;
@@ -381,11 +456,9 @@ function dev_url_descargar_imagen_al_servidor($url,$direccionCarpeta='assets/arc
     //sc_dev_echo_indice($url,$direccionCarpeta);
     //sc_var_dump(is_file(SERVERURL . "$direccionCarpeta/$nombreImagen"));
 
-    if (!is_file(SERVERURL . "$direccionCarpeta/$nombreImagen")) {
+    if (!is_file($serverURl . "$direccionCarpeta/$nombreImagen")) {
         //abrimos un fichero donde guardar la descarga de la web
-        //sc_var_dump("$direccionCarpeta/$nombreImagen.png");
         $fp = fopen("$direccionCarpeta/$nombreImagen.png", "w");
-        //sc_var_dump("https://www.google.com/s2/favicons?domain=$url");
 
         if($fp){
             // Se crea un manejador CURL
@@ -404,18 +477,17 @@ function dev_url_descargar_imagen_al_servidor($url,$direccionCarpeta='assets/arc
 
             //se cierra el manejador de ficheros
             fclose($fp);
-            //sc_var_dump('Subió',null,'w-100');
             return true;
         }
 
     }
-    //sc_var_dump('No subió',null,'w-100');
     return false;
 }
 
+//Falta corrección
 function sc_url_buscar_imagenes_google($busqueda){
     $img_pattern = '/<img[^>]+>/i';
-    //$datos = array();
+    
     if ($busqueda != '') {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, "https://www.google.com.ar/search?q=".urlencode($busqueda.' -vertical -portada')."&source=lnms&tbm=isch&sa=X");
@@ -425,29 +497,113 @@ function sc_url_buscar_imagenes_google($busqueda){
         curl_close($ch);
         preg_match_all($img_pattern, $curlout, $img_tags);
     }
+
     return $img_tags;
 }
 
-function sc_url_curl($url) {
-    try{
-        $ch = curl_init();
-        $timeout = 5;
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
-        $data = curl_exec($ch);
-        curl_close($ch);
-    }catch (Exception $e){
-
+function sc_url_str_a_url_amigable($t){
+    $caracteresInvalidos = explode(',', ".,\,,(,),[,],{,},!,¡,.,?,#,',\",`");
+    $letrasInvalidos     = explode(',', "á,é,í,ó,ú,Á,É,Í,Ó,Ú");
+    $letrasValidas       = explode(',', "a,e,i,o,u,a,e,i,o,u");
+    $conservar           = '0-9a-z\s\-'; // juego de caracteres a conservar
+    $regex               = sprintf('~[^%s]++~i', $conservar); // case insensitive
+    
+    foreach ($caracteresInvalidos as $caracter) {
+        $t = str_replace($caracter, "", $t);
     }
 
-    return $data;
+    for($i = 0, $iMax = sizeof($letrasInvalidos); $i < $iMax; $i++) {
+        $t = str_replace($letrasInvalidos[$i], $letrasValidas[$i], $t);
+    }
+
+    $t = preg_replace($regex, '', $t);
+    $t = trim($t);
+    $t = strtolower(preg_replace('/\s+/','-', $t));
+
+    return $t;
 }
+
+function sc_url_redirect($url, $statusCode = 303){
+   header('Location: ' . $url, true, $statusCode);
+   die();
+}
+
 
 /*###SQL###*/
 
+function sc_sql_conexion($host, $bbdd, $user, $pass, $puerto = '3306', $opcionesPDO = [], $driver='mysql'){
+    try {
+        $dsn = "$driver:host=$host;dbname=$bbdd;port=$puerto";
+        $dbh = new PDO($dsn, $user, $pass, $opcionesPDO);
+        
+        $dbh->setAttribute(PDO::ATTRR_ERRMODE, PDO::ERRMODE_SILENT);
+        $dbh->setAttribute(PDO::ATTRR_ERRMODE, PDO::ERRMODE_WARNING);
+        $dbh->setAttribute(PDO::ATTRR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
+        return $dbh;
+
+    } catch (PDOException $e){
+        echo $e->getMessage();
+    }
+    
+}
+
+function sc_sql_select($conexion, $sql, $parametros = [], $tipoPDOFech = PDO::FETCH_ASSOC, $depurar = false){
+    $query = $conexion->prepare($sql);
+   
+    try {
+        $sqlResult = $query->execute($parametros);
+
+        if ($sqlResult) {
+            $sqlResult = $query->fetchAll($tipoPDOFech);
+            $sqlResult = count($sqlResult) > 0 ? $sqlResult : false;
+
+        }else{
+            $sqlResult = false;
+        }
+
+        if ($depurar){
+            sc_echo('Debug de sc_sql_secure_lookup (4):');
+            sc_var_dump($sql);
+            sc_var_dump($parametros);
+            sc_var_dump($tipoPDOFech);
+            sc_var_dump($sqlResult);
+        }
+
+        return $sqlResult;
+
+    } catch (Exception $e) {
+        sc_var_dump('Hubo un error: ');
+        sc_var_dump($e);
+        return false;
+    }
+}
+
+function sc_sql_execute($conexion, $sql, $parametros = null, $depurar = false){
+    $query = $conexion->prepare($sql);
+
+    try {
+        $execResult = $query->execute($parametros);
+
+        if ($depurar){
+            sc_echo('Debug de sc_sql_secure_lookup (4):');
+            sc_var_dump($sql);
+            sc_var_dump($parametros);
+            sc_var_dump($execResult);
+        }
+
+        return !!( $execResult );
+
+    } catch (Exception $e) {
+        sc_var_dump('Hubo un error: ');
+        sc_var_dump($e);
+        return false;
+    }
+
+}
+
+//Falta corregir
 function sc_sql_lookup($sql){
-    //echo $sql;
     global $pdoLibreria;
     $query = $pdoLibreria->prepare($sql);
 
@@ -467,8 +623,8 @@ function sc_sql_lookup($sql){
 
 function sc_sql_secure_lookup($sql,$array=null,$depurar=false){
     global $pdoLibreria;
-    $query = $pdoLibreria->prepare($sql);
-    $sqlResult[0][0] = false;
+    $query     = $pdoLibreria->prepare($sql);
+    $sqlResult = false;
 
     try {
         $sqlResult = $query->execute($array);
@@ -490,7 +646,7 @@ function sc_sql_secure_lookup($sql,$array=null,$depurar=false){
                 }
             }
 
-            return count($sqlResult)!=0?$sqlResult:false;
+            return count($sqlResult) != 0 ? $sqlResult:false;
         }else{
             return $datos[0][0] = false;
         }
@@ -530,6 +686,7 @@ function sc_js_console_log($texto){
 
 
 /*###STR###*/
+
 function sc_str_existe_en_string($texto,$busqueda,$depurar=false){
     sc_dev_depurar($depurar,$texto,'sc_str_existe_en_string');
     return (strpos($texto,$busqueda) !== false);
@@ -541,7 +698,7 @@ function sc_str_quitar_espacios_y_lower($texto,$depurar=false){
 }
 
 function sc_str_resaltar_texto($t,$busqueda,$class=null){
-    return (isset($t[1]) && isset($busqueda[1]))?str_replace($busqueda,"<b class='$class'>$busqueda</b>",$t):false;
+    return (isset($t{1}) && isset($busqueda{1}))?str_replace($busqueda,"<b class='$class'>$busqueda</b>",$t):false;
 }
 
 function sc_str_generar_enlaces_html_de_string($texto,$depurar=false){
@@ -556,6 +713,7 @@ function sc_str_generar_enlaces_html_de_string($texto,$depurar=false){
         ),
         'sc_str_generar_enlaces_html_de_string');
     $texto = sc_str_reemplazar_expresion_regular($texto,'&amp;','&');
+  
     return preg_replace(
         '#((https?|ftp)://(\S*?\.\S*?))([\s)\[\]{},;"\':<]|\.\s|$)#i',
         "<a href=\"$1\" target=\"_blank\">$3</a>$4",
@@ -566,6 +724,7 @@ function sc_str_generar_enlaces_html_de_string($texto,$depurar=false){
 function sc_str_reemplazar_expresion_regular($t,$expresion,$reemplazo,$depurar=false){
     $expresion = sc_str_corregir_expresion_regular($expresion);
     sc_dev_depurar($depurar,"t : $t expresion : $expresion reemplazo : $reemplazo ",'sc_str_reemplazar_expresion_regular');
+  
     return preg_replace(
         $expresion,
         $reemplazo,
@@ -576,11 +735,20 @@ function sc_str_reemplazar_expresion_regular($t,$expresion,$reemplazo,$depurar=f
 function sc_str_incluye_expresion_regular($t,$expresion,$depurar=false){
     $expresion = sc_str_corregir_expresion_regular($expresion);
     sc_dev_depurar($depurar,array($t,$expresion),'sc_str_incluye_expresion_regular');
-    return preg_match($expresion,$t);
+    
+    try{
+        $respuesta = preg_match($expresion,$t);
+    }catch(Exeption){
+        $respuesta = false;
+    }
+
+
+    return $respuesta;
 }
 
 function sc_str_corregir_expresion_regular($expresion,$depurar=false){
     sc_dev_depurar($depurar,array($expresion),'sc_str_corregir_expresion_regular');
+  
     return (sc_str_inicia_con($expresion,'/') && sc_str_finaliza_con($expresion,'/')) ?
         $expresion :
         '/'.$expresion.'/';
@@ -604,6 +772,7 @@ function sc_str_extraer_expresion_regular($t,$expresion,$depurar=false){
 
         $coincidencias = count($arrayResutl)>1? $arrayResutl : $arrayResutl[0];
     }
+
     return $coincidencias;
 }
 
@@ -615,6 +784,7 @@ function sc_str_inicia_con($t,$busqueda,$depurar=false){
 function sc_str_finaliza_con($t,$busqueda,$depurar=false){
     sc_dev_depurar($depurar,$t,'sc_str_finaliza_con');
     $cantidadCaracteres = strlen ($busqueda);
+    
     return ($cantidadCaracteres && substr($t, -$cantidadCaracteres) == $busqueda);
 }
 
@@ -633,7 +803,7 @@ function sc_str_quitar_espacios_blancos($t,$depurar=false){
 }
 
 function sc_str_sin_caracteres_especiales($texto,$quitarTodos=true){
-    if(isset($texto[1])){
+    if(isset($texto{1})){
         //Aquí añades las letras que no quieres que se usen
         $vocalesNoPermitidas    = array('á','é','í','ó','ú','ñ');
         $vocalesNoPermitidasMay = array('Á','É','Í','Ó','Ú','Ñ');
@@ -671,7 +841,9 @@ function sc_str_to_oracion($t,$depurar=false){
     return sc_is_string($t,1) && strtolower($t) === $t ? ucfirst($t) : $t;
 }
 
+
 /*###FEC###*/
+
 function sc_fec_formatear($fecha,$formato='Y-m-d H:i:s',$depurar=false){
     sc_dev_depurar($depurar,array($fecha,$formato),'sc_fec_formatear');
     return date($formato, strtotime($fecha));
@@ -679,11 +851,13 @@ function sc_fec_formatear($fecha,$formato='Y-m-d H:i:s',$depurar=false){
 
 
 /*###ARR###*/
+
 function sc_arr_incluye_expresion_regular($array,$expresion,$depurar=false){
     sc_dev_depurar($depurar,array($array,$expresion),'sc_arr_incluye_expresion_regular');
 
-    if (is_array($array) && isset($expresion[1])){
+    if (is_array($array) && isset($expresion{1})){
         $expresion = sc_str_corregir_expresion_regular($expresion);
+       
         foreach ($array as $valor){
             if (sc_str_incluye_expresion_regular($valor,$expresion)){
                 return true;
@@ -696,6 +870,7 @@ function sc_arr_incluye_expresion_regular($array,$expresion,$depurar=false){
 
 function sc_arr_to_json($arr,$arrayKeys=null,$depurar=false){
     sc_dev_depurar($depurar,array($arr,$arrayKeys),'sc_arr_poner_keys');
+  
     if(sc_is_array($arr,1)){
         if(!sc_arr_contiene_keys($arr) && sc_arr_contiene_keys($arr) ){
             $lista = '';
@@ -711,32 +886,42 @@ function sc_arr_to_json($arr,$arrayKeys=null,$depurar=false){
         if(sc_is_array($arrayKeys,1) && !sc_arr_contiene_keys($arr)){
             $arr = sc_arr_poner_keys($arrayKeys,$arr);
         }
+
         return json_encode($arr);
     }
+
     return false;
 }
 
 function sc_arr_contiene_keys($arr,$depurar=false){
     sc_dev_depurar($depurar,$arr,'sc_arr_contiene_keys');
     $arr = array_keys($arr);
-    return (int) preg_grep('/(\D)+/',$arr);
+    
+    return (int) preg_grep('/(\D)+/g',$arr);
 }
 
 function sc_arr_poner_keys($arrayKeys,$arr,$depurar=false){
     sc_dev_depurar($depurar,array($arrayKeys,$arr),'sc_arr_poner_keys');
+    
     if (sc_is_array($arrayKeys) && sc_is_array($arr)){
         return array_combine($arrayKeys, $arr);
     }
+
     return false;
 }
 
 function sc_arr_unir($arr1,$arr2,$depurar=false){
     sc_dev_depurar($depurar,array($arr1,$arr2),'sc_arr_unir');
+    
     if (sc_is_array($arr1,1) && sc_is_array($arr2,1) ){
         return array_merge($arr1, $arr2);
     }
+
     return false;
 }
+
+
+
 
 /*###IS###*/
 function sc_is_string($t,$longitud=0,$depurar=false){
@@ -745,19 +930,22 @@ function sc_is_string($t,$longitud=0,$depurar=false){
         array(
             $t,
             $longitud,
-            ( is_string($t) && isset($t[$longitud]) )
+            ( is_string($t) && isset($t{$longitud}) )
         ),
         'sc_is_string'
     );
     $longitud = ($longitud!=0) ? $longitud-1 : $longitud;
-    return is_string($t) && isset($t[$longitud]);
+    
+    return is_string($t) && isset($t{$longitud});
 }
 
 function sc_is_url($url,$depurar=false){
     sc_dev_depurar($depurar,$url,'sc_is_url');
+    
     if (sc_is_string($url,3)){
-       return filter_var($url,FILTER_VALIDATE_URL);
+        return filter_var($url,FILTER_VALIDATE_URL);
     }
+
     return false;
 }
 
@@ -771,5 +959,17 @@ function sc_is_bool($obj,$depurar=false){
     return is_bool($obj);
 }
 
+function sc_is_int($num,$tamanio=false){
+    $tamanio = is_numeric($tamanio) ? $num >= $tamanio : true;
+    return is_int($num) && ($tamanio);
+}
 
+function sc_is_numeric($num,$tamanio=false){
+    $tamanio = is_numeric($tamanio) ? $num >= $tamanio : true;
+    return is_numeric($num) && ($tamanio);
+}
+function sc_is_float($num,$tamanio=false){
+    $tamanio = is_numeric($tamanio) ? $num >= $tamanio : true;
+    return is_float($num) && ($tamanio);
+}
 ?>
